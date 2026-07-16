@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>agentic-gates: CI quality gates for agentic engineering</title>
+<meta name="description" content="Tier-aware CI meta-gates that enforce engineering quality, supply-chain hygiene and spec traceability for codebases built with AI agents. Launching soon.">
+<style>
+  :root {
+    --bg: #0b0e14;
+    --fg: #e6e9ef;
+    --muted: #8b93a3;
+    --accent: #4cc38a;
+    --card: #131722;
+    --border: #232a3a;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #fafbfc;
+      --fg: #16181d;
+      --muted: #5c6470;
+      --accent: #0f7b4f;
+      --card: #ffffff;
+      --border: #e3e6ea;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.25rem;
+  }
+  main { max-width: 40rem; width: 100%; text-align: center; }
+  .mark {
+    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+    font-size: clamp(1.9rem, 6vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .mark .g { color: var(--accent); }
+  .tagline {
+    margin-top: 0.75rem;
+    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+    color: var(--muted);
+  }
+  .cards {
+    margin-top: 2.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
+    gap: 0.75rem;
+    text-align: left;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 0.6rem;
+    padding: 0.9rem 1rem;
+  }
+  .card h2 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin-bottom: 0.35rem;
+  }
+  .card p { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
+  .soon {
+    margin-top: 2.5rem;
+    display: inline-block;
+    border: 1px solid var(--border);
+    border-radius: 2rem;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+  .soon strong { color: var(--fg); font-weight: 600; }
+  footer {
+    margin-top: 3rem;
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1 class="mark">agentic<span class="g">-gates</span></h1>
+  <p class="tagline">Tier-aware CI meta-gates for agentic engineering: quality, supply-chain hygiene and spec traceability that cannot silently regress.</p>
+
+  <div class="cards">
+    <div class="card">
+      <h2>Enforced, not advised</h2>
+      <p>Machine gates run locally before every commit and again in CI. The spec is the source of truth.</p>
+    </div>
+    <div class="card">
+      <h2>Built for AI-written code</h2>
+      <p>Defenses and verification moats designed for codebases where agents write most of the changes.</p>
+    </div>
+    <div class="card">
+      <h2>Free core</h2>
+      <p>Secret, dependency and license scanning, CI hygiene, conventions and spec basics. Free, forever.</p>
+    </div>
+  </div>
+
+  <p class="soon">Launching soon on <strong>GitHub Marketplace</strong> and <strong>PyPI</strong></p>
+
+  <footer>
+    <p>&copy; 2026 betteryields GmbH &middot; <a href="mailto:info@betteryields.ai">info@betteryields.ai</a></p>
+  </footer>
+</main>
+</body>
+</html>
