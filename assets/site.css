@@ -1,0 +1,84 @@
+/* Shared chrome for blog / gate / beta pages — same design language as index.html */
+:root {
+  --bg: #0b0e14; --fg: #e6e9ef; --muted: #8b93a3; --accent: #4cc38a;
+  --card: #131722; --border: #232a3a;
+}
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #fafbfc; --fg: #16181d; --muted: #5c6470; --accent: #0f7b4f;
+    --card: #ffffff; --border: #e3e6ea;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6; padding: 2rem 1.25rem;
+}
+main { max-width: 46rem; margin: 0 auto; }
+.topnav { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2.5rem; }
+.topnav .mark {
+  font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-weight: 700; font-size: 1.15rem; color: var(--fg); text-decoration: none;
+}
+.topnav .mark .g { color: var(--accent); }
+.topnav nav a { color: var(--muted); text-decoration: none; margin-left: 1.1rem; font-size: 0.95rem; }
+.topnav nav a:hover { color: var(--fg); }
+.pagehead { font-size: clamp(1.5rem, 4.5vw, 2.1rem); letter-spacing: -0.01em; margin-bottom: 1rem; }
+.lede { color: var(--muted); font-size: 1.05rem; margin-bottom: 1.25rem; }
+.postlist { list-style: none; margin: 1.5rem 0 2.5rem; }
+.postlist li {
+  background: var(--card); border: 1px solid var(--border); border-radius: 0.6rem;
+  padding: 0.9rem 1.1rem; margin-bottom: 0.7rem;
+  display: flex; justify-content: space-between; gap: 1rem; align-items: baseline;
+}
+.postlist a { color: var(--fg); text-decoration: none; font-weight: 600; }
+.postlist a:hover { color: var(--accent); }
+.postlist .date { color: var(--muted); font-size: 0.85rem; white-space: nowrap; }
+.post h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.25; margin-bottom: 1rem; }
+.post h2 { font-size: 1.3rem; margin: 2rem 0 0.6rem; }
+.post p, .post li { margin-bottom: 0.9rem; }
+.post ul, .post ol { padding-left: 1.4rem; margin-bottom: 1rem; }
+.post a { color: var(--accent); }
+.post em { color: var(--muted); }
+.post hr { border: 0; border-top: 1px solid var(--border); margin: 2rem 0; }
+.post pre {
+  background: var(--card); border: 1px solid var(--border); border-radius: 0.5rem;
+  padding: 0.9rem 1rem; overflow-x: auto; margin-bottom: 1rem; font-size: 0.88rem;
+}
+.post code { font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 0.92em; }
+.post table { border-collapse: collapse; width: 100%; margin-bottom: 1.2rem; display: block; overflow-x: auto; }
+.post th, .post td { border: 1px solid var(--border); padding: 0.5rem 0.7rem; text-align: left; font-size: 0.92rem; }
+.post th { background: var(--card); }
+.cta-box {
+  background: var(--card); border: 1px solid var(--accent); border-radius: 0.6rem;
+  padding: 1.1rem 1.2rem; margin: 1.6rem 0;
+}
+.cta-box p { margin-bottom: 0.8rem; }
+.btn {
+  display: inline-block; background: var(--accent); color: var(--bg);
+  border: 0; border-radius: 0.45rem; padding: 0.55rem 1rem;
+  font-weight: 600; text-decoration: none; cursor: pointer; font-size: 0.95rem;
+}
+.signup {
+  background: var(--card); border: 1px solid var(--border); border-radius: 0.6rem;
+  padding: 1.3rem 1.4rem; margin: 2rem 0;
+}
+.signup h2 { margin-bottom: 0.4rem; }
+.signup p { color: var(--muted); margin-bottom: 0.9rem; }
+.capture .row { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.capture input[type="email"] {
+  flex: 1 1 14rem; background: var(--bg); color: var(--fg);
+  border: 1px solid var(--border); border-radius: 0.45rem; padding: 0.55rem 0.8rem; font-size: 0.95rem;
+}
+.capture button {
+  background: var(--accent); color: var(--bg); border: 0; border-radius: 0.45rem;
+  padding: 0.55rem 1rem; font-weight: 600; cursor: pointer; font-size: 0.95rem;
+}
+.consent { display: block; margin-top: 0.7rem; color: var(--muted); font-size: 0.82rem; }
+.consent input { margin-right: 0.4rem; }
+.consent a { color: inherit; }
+.reveal .ok { font-weight: 600; margin-bottom: 0.6rem; }
+.small { color: var(--muted); font-size: 0.85rem; }
+footer { margin-top: 3rem; font-size: 0.8rem; color: var(--muted); }
+footer a { color: inherit; }

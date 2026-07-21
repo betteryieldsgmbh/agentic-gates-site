@@ -1,0 +1,14 @@
+{
+  "_comment": "agentic-gates slice of the marketing CTA source (canonical file lives in the internal marketing repo, docs/marketing/cta.json — keep in sync, agentic-gates entries ONLY; entries for other products must never appear here, see the separation rules in README.md). Flip status/cta_text/cta_url here ONCE when the product goes live; rebuild updates every article.",
+  "products": {
+    "agentic-gates": {
+      "status": "beta",
+      "cta_text": "The full gate suite — pro gates wired into your CI, plus the complete case study with logs — is currently in closed beta. Want in? Become a beta tester",
+      "cta_url": "https://agentic-gates.dev/beta/"
+    }
+  },
+  "tool_links": {
+    "ai-build-gate": "https://agentic-gates.dev/get/ai-build-gate/",
+    "agentic-gates": "https://agentic-gates.dev/get/agentic-gates/"
+  }
+}

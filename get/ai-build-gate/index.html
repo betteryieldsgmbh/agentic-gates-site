@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Get ai-build-gate · agentic-gates</title>
+<meta name="description" content="A verification gate for AI-written builds: proof anchors checked byte-for-byte against disk, so an agent&#x27;s &quot;done&quot; is either true or caught.">
+<link rel="canonical" href="https://agentic-gates.dev/get/ai-build-gate/">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+<main>
+<header class="topnav">
+  <a class="mark" href="/">agentic<span class="g">-gates</span></a>
+  <nav><a href="/blog/">Blog</a> <a href="/beta/">Beta</a></nav>
+</header>
+<h1 class="pagehead">Get ai-build-gate — free</h1>
+<p class="lede">A verification gate for AI-written builds: proof anchors checked byte-for-byte against disk, so an agent&#x27;s &quot;done&quot; is either true or caught.</p>
+<p>Enter your email and the repo link appears right here (and lands in your inbox).</p>
+<form class="capture" data-action="" method="post" novalidate>
+  <input type="hidden" name="PRODUCT" value="agentic-gates"><input type="hidden" name="SOURCE" value="tool-gate"><input type="hidden" name="TOOL" value="ai-build-gate">
+  <div class="row">
+    <input type="email" name="EMAIL" required placeholder="you@company.com" aria-label="Email address">
+    <button type="submit">Show me the repo</button>
+  </div>
+  <label class="consent"><input type="checkbox" required>
+    I agree to receive emails from betteryields GmbH. Double opt-in; unsubscribe anytime.
+    See the <a href="/datenschutz.html">privacy policy</a>.</label>
+</form>
+<div class="reveal" hidden><p class="ok">Here is the repo:</p><p><a class="btn" href="https://github.com/betteryieldsgmbh/ai-build-gate">ai-build-gate on GitHub &rarr;</a></p><p class="small">We also emailed you the link (after you confirm — double opt-in).</p></div>
+<script>
+(function () {
+  var form = document.currentScript.previousElementSibling.previousElementSibling;
+  var reveal = document.currentScript.previousElementSibling;
+  form.addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    if (!form.reportValidity()) return;
+    var action = form.getAttribute("data-action");
+    if (action) {
+      try { fetch(action, { method: "POST", mode: "no-cors", body: new FormData(form) }); }
+      catch (e) { /* soft gate: reveal regardless */ }
+    }
+    form.hidden = true;
+    reveal.hidden = false;
+  });
+})();
+</script>
+<footer>
+  <p>&copy; 2026 betteryields GmbH &middot; <a href="mailto:info@betteryields.ai">info@betteryields.ai</a> &middot; <a href="/impressum.html">Impressum</a> &middot; <a href="/datenschutz.html">Privacy</a></p>
+</footer>
+</main>
+</body>
+</html>
