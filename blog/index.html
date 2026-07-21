@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blog · agentic-gates</title>
+<title>Articles · agentic-gates</title>
 <meta name="description" content="A green CI run doesn&#x27;t prove the AI agent followed the spec.">
 <link rel="canonical" href="https://agentic-gates.dev/blog/">
 <link rel="stylesheet" href="/assets/site.css">
@@ -12,42 +12,10 @@
 <main>
 <header class="topnav">
   <a class="mark" href="/">agentic<span class="g">-gates</span></a>
-  <nav><a href="/blog/">Blog</a> <a href="/beta/">Beta</a></nav>
+  <nav><a href="/blog/">Articles</a></nav>
 </header>
 <h1 class="pagehead">A green CI run doesn&#x27;t prove the AI agent followed the spec.</h1>
 <ul class="postlist"><li><a href="/blog/prompt-engineering-is-dead/">Prompt engineering is dead. We have the logs to prove it.</a><span class="date">2026-07-21</span></li></ul>
-<section class="signup">
-  <h2>Get notified when the pro gates ship</h2>
-  <p>Case studies and failure patterns from agentic engineering. No spam, double opt-in, unsubscribe anytime.</p>
-  <form class="capture" data-action="" method="post" novalidate>
-  <input type="hidden" name="PRODUCT" value="agentic-gates"><input type="hidden" name="SOURCE" value="newsletter">
-  <div class="row">
-    <input type="email" name="EMAIL" required placeholder="you@company.com" aria-label="Email address">
-    <button type="submit">Notify me</button>
-  </div>
-  <label class="consent"><input type="checkbox" required>
-    I agree to receive emails from betteryields GmbH. Double opt-in; unsubscribe anytime.
-    See the <a href="/datenschutz.html">privacy policy</a>.</label>
-</form>
-<div class="reveal" hidden><p class="ok">Thanks — check your inbox to confirm (double opt-in). You can unsubscribe anytime.</p></div>
-<script>
-(function () {
-  var form = document.currentScript.previousElementSibling.previousElementSibling;
-  var reveal = document.currentScript.previousElementSibling;
-  form.addEventListener("submit", function (ev) {
-    ev.preventDefault();
-    if (!form.reportValidity()) return;
-    var action = form.getAttribute("data-action");
-    if (action) {
-      try { fetch(action, { method: "POST", mode: "no-cors", body: new FormData(form) }); }
-      catch (e) { /* soft gate: reveal regardless */ }
-    }
-    form.hidden = true;
-    reveal.hidden = false;
-  });
-})();
-</script>
-</section>
 <footer>
   <p>&copy; 2026 betteryields GmbH &middot; <a href="mailto:info@betteryields.ai">info@betteryields.ai</a> &middot; <a href="/impressum.html">Impressum</a> &middot; <a href="/datenschutz.html">Privacy</a></p>
 </footer>

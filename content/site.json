@@ -1,33 +1,9 @@
 {
-  "_comment": "Site config — the ONE place for domain, forms and repo links. The build (build.py) reads this. Paste the Brevo form endpoint URLs into the empty form_action fields once the Brevo account exists; until then forms still soft-gate (they reveal the link) but collect nothing.",
+  "_comment": "Site config for the static article pages. Deliberately minimal (owner decision 2026-07-21): no email capture, no beta page — just the landing, the posts and the repo links.",
   "domain": "https://agentic-gates.dev",
   "product": "agentic-gates",
   "site_name": "agentic-gates",
+  "mark_html": "agentic<span class=\"g\">-gates</span>",
   "tagline_blog": "A green CI run doesn't prove the AI agent followed the spec.",
-  "newsletter": {
-    "heading": "Get notified when the pro gates ship",
-    "sub": "Case studies and failure patterns from agentic engineering. No spam, double opt-in, unsubscribe anytime.",
-    "form_action": ""
-  },
-  "beta": {
-    "heading": "agentic-gates is currently in closed beta",
-    "sub": "Pro gates wired into your CI, plus the complete case study with logs. Want in?",
-    "form_action": ""
-  },
-  "tool_gate": {
-    "form_action": "",
-    "repos": {
-      "ai-build-gate": {
-        "display": "ai-build-gate",
-        "pitch": "A verification gate for AI-written builds: proof anchors checked byte-for-byte against disk, so an agent's \"done\" is either true or caught.",
-        "github_url": "https://github.com/betteryieldsgmbh/ai-build-gate"
-      },
-      "agentic-gates": {
-        "display": "agentic-gates",
-        "pitch": "Tier-aware CI meta-gates for agentic engineering: quality, supply-chain hygiene and spec traceability that cannot silently regress.",
-        "github_url": "https://github.com/betteryieldsgmbh/agentic-gates"
-      }
-    }
-  },
   "footer_note": "&copy; 2026 betteryields GmbH &middot; <a href=\"mailto:info@betteryields.ai\">info@betteryields.ai</a> &middot; <a href=\"/impressum.html\">Impressum</a> &middot; <a href=\"/datenschutz.html\">Privacy</a>"
 }
