@@ -1,0 +1,38 @@
+{
+  "note": "Data for tools/prose_gate.py. Encodes the styleguide hard rules that can be checked mechanically. Consuming repos vendor this file plus prose_gate.py and run it in CI. Edit rules here; the checker stays generic.",
+  "source": "writing/schreibstil.md + writing/sprachtypen.json (hardRules) + marketing post-workflow hard style rules",
+  "dash": {
+    "forbidden_chars": ["–", "—"],
+    "flag_spaced_hyphen": true
+  },
+  "banned_phrases": [
+    {"pattern": "the danger is", "why": "smooth editorial transition, forbidden by the post style rules"},
+    {"pattern": "that'?s the real risk", "why": "smooth editorial transition"},
+    {"pattern": "that is the real risk", "why": "smooth editorial transition"},
+    {"pattern": "the real risk (of|here|is)", "why": "smooth editorial transition"},
+    {"pattern": "the real danger", "why": "smooth editorial transition"},
+    {"pattern": "here'?s the thing", "why": "filler transition"},
+    {"pattern": "the truth is,", "why": "filler transition"},
+    {"pattern": "at the end of the day", "why": "filler cliche"},
+    {"pattern": "in today'?s (world|fast)", "why": "hype opener"},
+    {"pattern": "game.?changer", "why": "marketing hype"},
+    {"pattern": "revolutionary", "why": "marketing hype"},
+    {"pattern": "cutting.edge", "why": "marketing hype"},
+    {"pattern": "seamless(ly)?", "why": "marketing hype"},
+    {"pattern": "unlock the (power|potential)", "why": "marketing hype"},
+    {"pattern": "supercharge", "why": "marketing hype"},
+    {"pattern": "das (eigentliche|wahre) (risiko|problem|gefahr)", "why": "smooth editorial transition (de)"},
+    {"pattern": "die (eigentliche|wahre) gefahr", "why": "smooth editorial transition (de)"}
+  ],
+  "antithesis": [
+    {"pattern": "\\bnot\\s+[^.,;:]{1,50},?\\s+but\\s+", "why": "not-X-but-Y antithesis definition"},
+    {"pattern": "\\bnicht\\s+[^.,;:]{1,50},?\\s+sondern\\s+", "why": "nicht-X-sondern-Y antithesis (de)"},
+    {"pattern": ",\\s+not\\s+[^.,;:]{1,45}[.;:]", "why": "X-comma-not-Y antithesis definition"},
+    {"pattern": ",\\s+nicht\\s+[^.,;:]{1,45}[.;:]", "why": "X-komma-nicht-Y antithesis (de)"},
+    {"pattern": "\\bis\\s+not\\s+[^.,;:]{1,60}\\.\\s+it\\s+is\\b", "why": "is-not-X-it-is-Y antithesis definition"},
+    {"pattern": "\\bist\\s+nicht\\b[^.]{1,60}\\.\\s+es\\s+ist\\b", "why": "ist-nicht-X-es-ist-Y antithesis (de)"}
+  ],
+  "staccato_openers": ["not ", "nicht "],
+  "informal_de": ["du", "dich", "dir", "dein", "deine", "deinem", "deinen", "deiner", "deines", "euer", "eure", "euch"],
+  "vague_fillers": ["irgendwie", "irgendwas", "irgendwelche"]
+}

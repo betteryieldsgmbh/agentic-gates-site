@@ -1,0 +1,39 @@
+name: gates
+
+# This site is public and carries legally binding text (Impressum, Datenschutzerklaerung).
+# It is hand-edited, so nothing but this workflow stands between a broken tag or a dropped
+# legal item and the live page at agentic-gates.dev. The gates run on every push and every
+# pull request, and main requires them.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test runner
+        run: python -m pip install --upgrade pip pytest
+
+      - name: HTML gate (structure, links, legal duties)
+        run: python tools/html_gate.py
+
+      - name: Prose gate (vendored styleguide rules)
+        run: python tools/prose_gate.py *.html
+
+      - name: Gate self-tests
+        # The gates are only evidence while their own sabotage tests still pass: each rule
+        # has a test proving it reports a page that breaks it. Without this step a gate
+        # could be quietly defanged and every run would stay green.
+        run: python -m pytest tools/ -q

@@ -1,0 +1,22 @@
+{
+  "note": "Vendored from the styleguide repo. Do not edit the vendored files by hand; run tools/pull_styleguide.py to refresh.",
+  "source_repo": "betteryieldsgmbh/styleguide",
+  "source_commit": "ed5e6a45b761627ecbf203df285a74eb097e15d0",
+  "files": [
+    {
+      "source": "tools/prose_gate.py",
+      "vendored": "prose_gate.py",
+      "sha256": "83e9512dab1eec7715d9acaada80930c56f6f216479085c82b669dcb3a21116c"
+    },
+    {
+      "source": "tools/prose_rules.json",
+      "vendored": "prose_rules.json",
+      "sha256": "182005e8868448c14efd1bac20b85980294a5688f274d7f252288db1769bba14"
+    },
+    {
+      "source": "tools/test_prose_gate.py",
+      "vendored": "test_prose_gate.py",
+      "sha256": "65a31a643db6f74b4d4adf7946294e161f4d48a919fd68b193d3aa8168f70f12"
+    }
+  ]
+}
