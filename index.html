@@ -4,118 +4,817 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>agentic-gates: CI quality gates for agentic engineering</title>
-<meta name="description" content="Tier-aware CI meta-gates that enforce engineering quality, supply-chain hygiene and spec traceability for codebases built with AI agents. Launching soon.">
+<meta name="description" content="Tier-aware CI meta-gates that enforce engineering quality, supply-chain hygiene and spec traceability for codebases built with AI agents. One order at the front, one approval at the end. Launching soon.">
 <style>
-  :root {
-    --bg: #0b0e14;
-    --fg: #e6e9ef;
-    --muted: #8b93a3;
-    --accent: #4cc38a;
-    --card: #131722;
-    --border: #232a3a;
-  }
-  @media (prefers-color-scheme: light) {
-    :root {
-      --bg: #fafbfc;
-      --fg: #16181d;
-      --muted: #5c6470;
-      --accent: #0f7b4f;
-      --card: #ffffff;
-      --border: #e3e6ea;
-    }
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem 1.25rem;
-  }
-  main { max-width: 40rem; width: 100%; text-align: center; }
-  .mark {
-    font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
-    font-size: clamp(1.9rem, 6vw, 3rem);
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
-  .mark .g { color: var(--accent); }
-  .tagline {
-    margin-top: 0.75rem;
-    font-size: clamp(1.05rem, 2.6vw, 1.3rem);
-    color: var(--muted);
-  }
-  .cards {
-    margin-top: 2.5rem;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(10.5rem, 1fr));
-    gap: 0.75rem;
-    text-align: left;
-  }
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 0.6rem;
-    padding: 0.9rem 1rem;
-  }
-  .card h2 {
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--accent);
-    margin-bottom: 0.35rem;
-  }
-  .card p { font-size: 0.88rem; color: var(--muted); line-height: 1.45; }
-  .soon {
-    margin-top: 2.5rem;
-    display: inline-block;
-    border: 1px solid var(--border);
-    border-radius: 2rem;
-    padding: 0.5rem 1.1rem;
-    font-size: 0.9rem;
-    color: var(--muted);
-  }
-  .soon strong { color: var(--fg); font-weight: 600; }
-  footer {
-    margin-top: 3rem;
-    font-size: 0.8rem;
-    color: var(--muted);
-  }
-  footer a { color: inherit; }
+	/* Dark first, as this page has always been. Light is the same set of tokens
+	   swapped, so every colour is defined once and used through a variable. */
+	:root {
+		--bg: #0b0e14;
+		--fg: #e6e9ef;
+		--muted: #8b93a3;
+		--accent: #4cc38a;
+		--human: #7c9ede;
+		--crit: #e5786c;
+		--warn: #d7a44a;
+		--card: #131722;
+		--border: #232a3a;
+		--rail: #1b2130;
+		--code: #0f1420;
+	}
+	@media (prefers-color-scheme: light) {
+		:root:not([data-theme='dark']) {
+			--bg: #fafbfc;
+			--fg: #16181d;
+			--muted: #5c6470;
+			--accent: #0f7b4f;
+			--human: #33529b;
+			--crit: #b2372a;
+			--warn: #8a5b00;
+			--card: #ffffff;
+			--border: #e3e6ea;
+			--rail: #eceff3;
+			--code: #f4f6f8;
+		}
+	}
+	:root[data-theme='light'] {
+		--bg: #fafbfc;
+		--fg: #16181d;
+		--muted: #5c6470;
+		--accent: #0f7b4f;
+		--human: #33529b;
+		--crit: #b2372a;
+		--warn: #8a5b00;
+		--card: #ffffff;
+		--border: #e3e6ea;
+		--rail: #eceff3;
+		--code: #f4f6f8;
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		box-sizing: border-box;
+	}
+	body {
+		background: var(--bg);
+		color: var(--fg);
+		font-family: ui-sans-serif, system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+		line-height: 1.55;
+		-webkit-font-smoothing: antialiased;
+	}
+	.mono {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+	}
+	.page {
+		max-width: 68rem;
+		margin: 0 auto;
+		padding: 3.5rem 1.25rem 4rem;
+		display: flex;
+		flex-direction: column;
+		gap: 4.5rem;
+	}
+
+	/* ---------- Head ---------- */
+	.hero {
+		max-width: 40rem;
+		margin: 0 auto;
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+	.mark {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: clamp(1.9rem, 6vw, 3rem);
+		font-weight: 700;
+		letter-spacing: -0.02em;
+	}
+	.mark .g {
+		color: var(--accent);
+	}
+	.tagline {
+		font-size: clamp(1.05rem, 2.6vw, 1.25rem);
+		color: var(--muted);
+		text-wrap: balance;
+	}
+
+	/* ---------- Sections ---------- */
+	section {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+	.eyebrow {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.72rem;
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		color: var(--accent);
+	}
+	h2 {
+		font-size: clamp(1.35rem, 3.4vw, 1.75rem);
+		font-weight: 650;
+		letter-spacing: -0.015em;
+		text-wrap: balance;
+	}
+	.lead {
+		color: var(--muted);
+		max-width: 46rem;
+	}
+	.head {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+
+	/* ---------- The run ---------- */
+	/* Twelve steps never fit one line on any screen, and a strip that runs out of
+	   the window on a landing page is a strip nobody scrolls. So the run wraps into
+	   rows: four columns from 64rem, two from 40rem, one below that. The numbers
+	   carry the order across a row break, and the arrow is suppressed at the end of
+	   each row so it never points into the margin. */
+	.rail {
+		display: grid;
+		grid-template-columns: 1fr;
+		align-items: stretch;
+		column-gap: 1.4rem;
+		row-gap: 1.5rem;
+	}
+	.step {
+		position: relative;
+		background: var(--card);
+		border: 1px solid var(--border);
+		border-radius: 0.55rem;
+		padding: 0.8rem 0.85rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+	}
+	/* The arrow lives in the gap between two steps, outside either box. One column,
+	   so it points down. */
+	.step:not(:last-child)::after {
+		content: '';
+		position: absolute;
+		bottom: -1.1rem;
+		left: 1.1rem;
+		width: 0.42rem;
+		height: 0.42rem;
+		border-top: 1.5px solid var(--muted);
+		border-right: 1.5px solid var(--muted);
+		transform: rotate(135deg);
+	}
+	.step .n {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.66rem;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+	}
+	.step h3 {
+		font-size: 0.9rem;
+		font-weight: 640;
+		letter-spacing: -0.01em;
+	}
+	.step p {
+		font-size: 0.78rem;
+		color: var(--muted);
+		line-height: 1.4;
+	}
+	/* The question round binds nothing yet: dashed, and in the human colour. */
+	.step.human {
+		border-style: dashed;
+		border-color: var(--human);
+		background: transparent;
+	}
+	.step.human h3,
+	.step.human .n {
+		color: var(--human);
+	}
+	.step.main {
+		border-color: var(--accent);
+	}
+	.step.main h3 {
+		color: var(--accent);
+	}
+	@media (min-width: 40rem) {
+		.rail {
+			grid-template-columns: repeat(2, 1fr);
+		}
+		.step:not(:last-child)::after {
+			top: 50%;
+			bottom: auto;
+			left: auto;
+			right: -1.05rem;
+			transform: translateY(-50%) rotate(45deg);
+		}
+		/* No arrow at the end of a row: it would point into the margin. */
+		.step:nth-child(2n)::after {
+			content: none;
+		}
+	}
+	@media (min-width: 64rem) {
+		.rail {
+			grid-template-columns: repeat(4, 1fr);
+		}
+		.step:nth-child(2n)::after {
+			content: '';
+		}
+		.step:nth-child(4n)::after {
+			content: none;
+		}
+		.step:last-child::after {
+			content: none;
+		}
+	}
+
+	.loop {
+		display: flex;
+		align-items: center;
+		gap: 0.55rem;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	.loop::before {
+		content: '';
+		flex: 0 0 1.6rem;
+		height: 1px;
+		background: var(--muted);
+	}
+
+	/* ---------- Shared stores ---------- */
+	.stores {
+		background: var(--rail);
+		border: 1px dashed var(--border);
+		border-radius: 0.7rem;
+		padding: 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+	}
+	.stores > .label {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--muted);
+	}
+	.storegrid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+		gap: 0.75rem;
+	}
+	.store {
+		background: var(--card);
+		border: 1px solid var(--border);
+		border-radius: 0.5rem;
+		padding: 0.8rem 0.9rem;
+	}
+	.store.draft {
+		border-style: dashed;
+		border-color: var(--human);
+		background: transparent;
+	}
+	.store h3 {
+		font-size: 0.85rem;
+		font-weight: 640;
+		margin-bottom: 0.3rem;
+	}
+	.store.draft h3 {
+		color: var(--human);
+	}
+	.store code {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.78rem;
+		color: var(--muted);
+		font-weight: 500;
+	}
+	.store p {
+		font-size: 0.79rem;
+		color: var(--muted);
+		line-height: 1.45;
+	}
+
+	/* ---------- The two routes ---------- */
+	.routes {
+		display: grid;
+		/* min() rather than a bare 19rem: on a 320px screen the page gutters leave
+		   280px, and a hard 19rem minimum pushed the card 4px past the window.
+		   Measured in Chromium at 320px before this line existed. */
+		grid-template-columns: repeat(auto-fit, minmax(min(19rem, 100%), 1fr));
+		gap: 0.9rem;
+	}
+	.route {
+		background: var(--card);
+		border: 1px solid var(--border);
+		border-radius: 0.6rem;
+		padding: 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.6rem;
+	}
+	.route .tag {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.13em;
+		color: var(--accent);
+	}
+	.route.later {
+		border-style: dashed;
+	}
+	.route.later .tag {
+		color: var(--muted);
+	}
+	.route h3 {
+		font-size: 1rem;
+		font-weight: 640;
+	}
+	.route p {
+		font-size: 0.86rem;
+		color: var(--muted);
+	}
+	pre {
+		background: var(--code);
+		border: 1px solid var(--border);
+		border-radius: 0.45rem;
+		padding: 0.7rem 0.8rem;
+		overflow-x: auto;
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.78rem;
+		line-height: 1.55;
+		color: var(--fg);
+	}
+	pre .c {
+		color: var(--muted);
+	}
+	pre .k {
+		color: var(--accent);
+	}
+	.returns {
+		border-left: 2px solid var(--accent);
+		padding-left: 0.9rem;
+		max-width: 42rem;
+	}
+	/* ---------- The board ---------- */
+	.board {
+		background: var(--card);
+		border: 1px solid var(--border);
+		border-radius: 0.7rem;
+		padding: 1.1rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+	.boardlabel {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.7rem;
+		text-transform: uppercase;
+		letter-spacing: 0.14em;
+		color: var(--muted);
+	}
+	.kpis {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+		gap: 0.75rem;
+	}
+	.kpi {
+		background: var(--rail);
+		border: 1px solid var(--border);
+		border-radius: 0.45rem;
+		padding: 0.6rem 0.7rem;
+		display: flex;
+		flex-direction: column;
+		gap: 0.15rem;
+	}
+	.kpi .k {
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.07em;
+		color: var(--muted);
+	}
+	.kpi .v {
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 1.35rem;
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.1;
+	}
+	.kpi .v.ok {
+		color: var(--accent);
+	}
+	.kpi .v.crit {
+		color: var(--crit);
+	}
+	.kpi .v.warn {
+		color: var(--warn);
+	}
+	.kpi .v.dash {
+		color: var(--muted);
+	}
+	.scroll {
+		overflow-x: auto;
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.84rem;
+	}
+	th {
+		text-align: left;
+		font-size: 0.68rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--muted);
+		font-weight: 600;
+		border-bottom: 1px solid var(--border);
+		padding: 0.4rem 0.7rem 0.4rem 0;
+		white-space: nowrap;
+	}
+	td {
+		border-bottom: 1px solid var(--border);
+		padding: 0.45rem 0.7rem 0.45rem 0;
+		color: var(--fg);
+	}
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+	th.num,
+	td.num {
+		text-align: right;
+		padding-right: 0;
+		font-variant-numeric: tabular-nums;
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		color: var(--muted);
+	}
+	.pill {
+		display: inline-block;
+		border-radius: 1rem;
+		padding: 0.05rem 0.55rem;
+		font-family: ui-monospace, 'Cascadia Code', 'SF Mono', Consolas, monospace;
+		font-size: 0.72rem;
+		border: 1px solid var(--border);
+		color: var(--muted);
+	}
+	.pill.ok {
+		color: var(--accent);
+		border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+	}
+	.pill.crit {
+		color: var(--crit);
+		border-color: color-mix(in srgb, var(--crit) 45%, transparent);
+	}
+	.sub {
+		display: block;
+		font-size: 0.72rem;
+		color: var(--muted);
+		font-variant-numeric: tabular-nums;
+	}
+	.boardnote {
+		display: flex;
+		align-items: baseline;
+		gap: 0.5rem;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+
+	.returns h3 {
+		font-size: 0.95rem;
+		font-weight: 640;
+		margin-bottom: 0.25rem;
+	}
+	.returns p {
+		font-size: 0.88rem;
+		color: var(--muted);
+	}
+
+	/* ---------- Foot ---------- */
+	.soon {
+		align-self: center;
+		border: 1px solid var(--border);
+		border-radius: 2rem;
+		padding: 0.5rem 1.1rem;
+		font-size: 0.9rem;
+		color: var(--muted);
+		text-align: center;
+	}
+	.soon strong {
+		color: var(--fg);
+		font-weight: 600;
+	}
+	.more {
+		text-align: center;
+		font-size: 0.9rem;
+	}
+	.more a {
+		color: var(--accent);
+		text-decoration: none;
+		border-bottom: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+		padding-bottom: 1px;
+	}
+	.more a:hover {
+		border-bottom-color: var(--accent);
+	}
+	footer {
+		border-top: 1px solid var(--border);
+		padding-top: 1.5rem;
+		text-align: center;
+		font-size: 0.8rem;
+		color: var(--muted);
+	}
+	footer a {
+		color: inherit;
+	}
+	a:focus-visible {
+		outline: 2px solid var(--accent);
+		outline-offset: 2px;
+	}
+	.note {
+		max-width: 46rem;
+		margin: 0 auto;
+		border: 1px dashed var(--border);
+		border-radius: 0.6rem;
+		padding: 0.9rem 1rem;
+		font-size: 0.82rem;
+		color: var(--muted);
+	}
+	.note strong {
+		color: var(--fg);
+		font-weight: 620;
+	}
+
+	}
 </style>
 </head>
 <body>
-<main>
-  <h1 class="mark">agentic<span class="g">-gates</span></h1>
-  <p class="tagline">Tier-aware CI meta-gates for agentic engineering: quality, supply-chain hygiene and spec traceability that cannot silently regress.</p>
+<div class="page">
+	<div class="hero">
+		<h1 class="mark">agentic<span class="g">-gates</span></h1>
+		<p class="tagline">
+			Tier-aware CI meta-gates for agentic engineering: quality, supply-chain hygiene and spec
+			traceability that cannot silently regress.
+		</p>
+	</div>
 
-  <div class="cards">
-    <div class="card">
-      <h2>Enforced, not advised</h2>
-      <p>Machine gates run locally before every commit and again in CI. The spec is the source of truth.</p>
-    </div>
-    <div class="card">
-      <h2>Built for AI-written code</h2>
-      <p>Defenses and verification moats designed for codebases where agents write most of the changes.</p>
-    </div>
-    <div class="card">
-      <h2>Free core</h2>
-      <p>Secret, dependency and license scanning, CI hygiene, conventions and spec basics. Free, forever.</p>
-    </div>
-  </div>
+	<section>
+		<div class="head">
+			<p class="eyebrow">How it runs</p>
+			<h2>One order at the front, one approval at the end</h2>
+			<p class="lead">
+				Between those two moments nothing waits for a person. Every step is a check that either
+				passes the change on or stops it. The two dashed boxes are the question round, before
+				anything binds.
+			</p>
+		</div>
 
-  <p class="soon">Launching soon on <strong>GitHub Marketplace</strong> and <strong>PyPI</strong></p>
+		<div class="rail" role="group" aria-label="The run, from the order to the report">
+				<div class="step human">
+					<span class="n">you</span>
+					<h3>Order</h3>
+					<p>What should exist, and the approvals along the way.</p>
+				</div>
+				<div class="step human">
+					<span class="n">round 1</span>
+					<h3>Project charter</h3>
+					<p>The question round: what do we actually want?</p>
+				</div>
+				<div class="step human">
+					<span class="n">round 2</span>
+					<h3>Architecture proposals</h3>
+					<p>Proposed, walked through and decided with you.</p>
+				</div>
+				<div class="step">
+					<span class="n">01</span>
+					<h3>Write the spec</h3>
+					<p>What to build, in requirements and scenarios.</p>
+				</div>
+				<div class="step">
+					<span class="n">02</span>
+					<h3>Write the code</h3>
+					<p>The spec stays as it is while the code is written.</p>
+				</div>
+				<div class="step">
+					<span class="n">03</span>
+					<h3>Write the tests</h3>
+					<p>The code stays as it is while the tests are written.</p>
+				</div>
+				<div class="step">
+					<span class="n">04</span>
+					<h3>Re-think</h3>
+					<p>The AI optimizes its own code, in the same context window.</p>
+				</div>
+				<div class="step">
+					<span class="n">05</span>
+					<h3>Pre-push battery</h3>
+					<p>All gates, on the machine, before anything leaves it.</p>
+				</div>
+				<div class="step">
+					<span class="n">06</span>
+					<h3>PR checks</h3>
+					<p>The same gates again in CI, in parallel.</p>
+				</div>
+				<div class="step">
+					<span class="n">07</span>
+					<h3>Merge queue</h3>
+					<p>Integration test against the full matrix.</p>
+				</div>
+				<div class="step main">
+					<span class="n">08</span>
+					<h3>main</h3>
+					<p>Single source of truth. Green is the only way in.</p>
+				</div>
+				<div class="step">
+					<span class="n">09</span>
+					<h3>Gate report</h3>
+					<p>Per pull request, and a dashboard over time.</p>
+			</div>
+		</div>
 
-  <footer>
-    <!-- No mail address here (owner decision 2026-08-16). The Impressum carries the
-         contact that Section 5 DDG requires, and the privacy notice carries the one
-         the GDPR requires for the controller and for an objection. A third copy in
-         the footer of the landing page adds no duty and one more address to harvest. -->
-    <p>&copy; 2026 betteryields GmbH &middot; <a href="/impressum.html">Impressum</a> &middot; <a href="/datenschutz.html">Privacy</a></p>
-  </footer>
-</main>
+		<p class="loop">The report goes back to you. That is the second and last human moment.</p>
+	</section>
+
+	<section>
+		<div class="stores">
+			<p class="label">Shared stores: every check reads from here</p>
+			<div class="storegrid">
+				<div class="store draft">
+					<h3>Architecture</h3>
+					<p>
+						The result of the proposal round: cut, style, prohibitions. It binds once you have
+						approved it.
+					</p>
+				</div>
+				<div class="store">
+					<h3>Spec shelf <code>openspec/</code></h3>
+					<p>
+						Every finished spec lands here with all its requirements and scenarios. The checks hold
+						the code against them.
+					</p>
+				</div>
+				<div class="store">
+					<h3>Rulebook <code>security/</code></h3>
+					<p>Which check applies, from when it blocks, and which defects are already known.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section>
+		<div class="head">
+			<p class="eyebrow">Two ways in</p>
+			<h2>In your pipeline, or on your machine</h2>
+			<p class="lead">
+				The same gates in both places. What blocks a pull request has already blocked the commit
+				locally, so a red pipeline is a surprise rather than a routine.
+			</p>
+		</div>
+
+		<div class="routes">
+			<div class="route">
+				<p class="tag">Route 1, git</p>
+				<h3>One reference in your workflow</h3>
+				<p>
+					Your pipeline calls ours. Nothing is copied into your repository, and an update reaches
+					you by moving one version pin.
+				</p>
+				<pre><span class="c"># .github/workflows/gates.yml</span>
+jobs:
+  gates:
+    <span class="k">uses</span>: <span class="c">...   # pinned to a version</span>
+    <span class="k">with</span>:
+      spec-root: .</pre>
+			</div>
+			<div class="route">
+				<p class="tag">Route 2, your machine</p>
+				<h3>The battery before the push</h3>
+				<p>
+					The same checks locally, at the point where a fix is cheap. This is what the pre-push
+					step in the run above does.
+				</p>
+				<p>
+					Two commands: the full battery of gates for the tier you are on, and the drift check that
+					holds the spec and the code against each other. Same checks, same answers as in CI.
+				</p>
+			</div>
+			<div class="route later">
+				<p class="tag">Later</p>
+				<h3>Over the network</h3>
+				<p>
+					Hand over a repository and receive the same gate report back, for pipelines that are not
+					GitHub. Not part of the first release.
+				</p>
+			</div>
+		</div>
+
+		<div class="returns">
+			<h3>What comes back</h3>
+			<p>
+				One report per pull request: which gate ran, what it read, what it found, and from when a
+				finding blocks. The same report feeds a board across all your repositories, so a gate that
+				is quietly weakened shows up as a line that stops moving.
+			</p>
+		</div>
+	</section>
+
+	<section>
+		<div class="head">
+			<p class="eyebrow">The board</p>
+			<h2>A dash means not measured</h2>
+			<p class="lead">
+				Every figure on the board is read from the pipeline itself, so a repository publishes
+				nothing to appear on it. Where a value has not been measured yet the cell stays a dash. It
+				is never filled with a zero, because a zero reads as an all-clear that nobody checked.
+			</p>
+		</div>
+
+		<div class="board">
+			<p class="boardlabel">Example board</p>
+
+			<div class="kpis">
+				<div class="kpi">
+					<span class="k">Repos</span><span class="v">23</span>
+				</div>
+				<div class="kpi">
+					<span class="k">with CI</span><span class="v warn">19</span>
+				</div>
+				<div class="kpi">
+					<span class="k">gated server-side</span><span class="v warn">17</span>
+				</div>
+				<div class="kpi">
+					<span class="k">last run red of 21 readable</span><span class="v crit">1</span>
+				</div>
+				<div class="kpi">
+					<span class="k">PRs open in 21 of 23</span><span class="v">7</span>
+				</div>
+				<div class="kpi">
+					<span class="k">Coverage</span><span class="v ok">87%</span>
+				</div>
+				<div class="kpi">
+					<span class="k">Test strength</span><span class="v ok">74%</span>
+				</div>
+			</div>
+
+			<div class="scroll">
+				<table>
+					<thead>
+						<tr>
+							<th>Gate</th>
+							<th>Answer</th>
+							<th class="num">Duration</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Secret scan</td>
+							<td><span class="pill ok">green</span></td>
+							<td class="num">4s</td>
+						</tr>
+						<tr>
+							<td>Dependency and license scan</td>
+							<td><span class="pill ok">green</span></td>
+							<td class="num">16s</td>
+						</tr>
+						<tr>
+							<td>Spec drift</td>
+							<td><span class="pill crit">red</span></td>
+							<td class="num">3s</td>
+						</tr>
+						<tr>
+							<td>Conventions</td>
+							<td><span class="pill ok">green</span></td>
+							<td class="num">12s</td>
+						</tr>
+						<tr>
+							<td>Test strength <span class="sub">74% of mutants killed, floor 60%</span></td>
+							<td><span class="pill ok">green</span></td>
+							<td class="num">6m 08s</td>
+						</tr>
+						<tr>
+							<td>Structure drift <span class="sub">no evidence file for this run yet</span></td>
+							<td><span class="pill dash">&ndash;</span></td>
+							<td class="num">&ndash;</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<p class="boardnote">
+				<span class="pill dash">&ndash;</span> not measured. The board names the cause and what
+				closes it, so the gap is a task rather than a mystery.
+			</p>
+		</div>
+	</section>
+
+	<p class="soon">
+		Launching soon on <strong>GitHub Marketplace</strong> and <strong>PyPI</strong>
+	</p>
+
+	<p class="more">
+		Written up in detail:
+		<a href="https://www.betteryields.ai/blog/topic/agentic-gates">Spec Coding on the betteryields blog</a>
+	</p>
+
+	<footer>
+		<p>&copy; 2026 betteryields GmbH &middot; <a href="/impressum.html">Legal notice</a> &middot; <a href="/datenschutz.html">Privacy</a></p>
+	</footer>
+</div>
 </body>
 </html>
