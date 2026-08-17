@@ -1,18 +1,12 @@
+/* Dunkel, und nur dunkel, wie die Startseite (Owner-Entscheidung 2026-08-17).
+   Eine Rechtsseite, die anders aussieht als die Seite, von der sie verlinkt ist,
+   sieht aus wie eine fremde Seite. */
 :root {
   --bg: #0b0e14;
   --fg: #e6e9ef;
   --muted: #8b93a3;
   --accent: #4cc38a;
   --border: #232a3a;
-}
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg: #fafbfc;
-    --fg: #16181d;
-    --muted: #5c6470;
-    --accent: #0f7b4f;
-    --border: #e3e6ea;
-  }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
