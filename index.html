@@ -6,8 +6,19 @@
 <title>agentic-gates: CI quality gates for agentic engineering</title>
 <meta name="description" content="Tier-aware CI meta-gates that enforce engineering quality, supply-chain hygiene and spec traceability for codebases built with AI agents. One order at the front, one approval at the end. Launching soon.">
 <style>
-	/* Dark first, as this page has always been. Light is the same set of tokens
-	   swapped, so every colour is defined once and used through a variable. */
+	/*
+	 * Dunkel, und nur dunkel. Owner-Entscheidung 2026-08-17: die Seite soll so
+	 * aussehen wie die Vorschau auf betteryields.ai, und die zeigt sie dunkel.
+	 *
+	 * Bis dahin folgte sie der Einstellung des Systems, und damit sahen zwei
+	 * Besucher zwei verschiedene Produkte: wer sein Betriebssystem hell gestellt
+	 * hat, bekam eine weisse Seite, die mit der Kachel auf der Startseite nichts
+	 * zu tun hatte. Eine Marke, die von der Systemeinstellung des Lesers abhaengt,
+	 * ist keine.
+	 *
+	 * Jede Farbe steht deshalb genau einmal, hier, und wird ueber eine Variable
+	 * benutzt. Die Seite bringt ihren Grund selbst mit und leiht sich keinen.
+	 */
 	:root {
 		--bg: #0b0e14;
 		--fg: #e6e9ef;
@@ -21,35 +32,6 @@
 		--rail: #1b2130;
 		--code: #0f1420;
 	}
-	@media (prefers-color-scheme: light) {
-		:root:not([data-theme='dark']) {
-			--bg: #fafbfc;
-			--fg: #16181d;
-			--muted: #5c6470;
-			--accent: #0f7b4f;
-			--human: #33529b;
-			--crit: #b2372a;
-			--warn: #8a5b00;
-			--card: #ffffff;
-			--border: #e3e6ea;
-			--rail: #eceff3;
-			--code: #f4f6f8;
-		}
-	}
-	:root[data-theme='light'] {
-		--bg: #fafbfc;
-		--fg: #16181d;
-		--muted: #5c6470;
-		--accent: #0f7b4f;
-		--human: #33529b;
-		--crit: #b2372a;
-		--warn: #8a5b00;
-		--card: #ffffff;
-		--border: #e3e6ea;
-		--rail: #eceff3;
-		--code: #f4f6f8;
-	}
-
 	* {
 		margin: 0;
 		padding: 0;
