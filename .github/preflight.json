@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "source": "derived from .github/workflows: run steps of push/pull_request jobs",
+  "pre_commit": {
+    "checks": []
+  },
+  "pre_push": [
+    {
+      "name": "gates:HTML gate (structure, links, legal duties)",
+      "run": "python tools/html_gate.py",
+      "paths": [],
+      "ci": "gates.yml gates/HTML gate (structure, links, legal duties)"
+    },
+    {
+      "name": "gates:Prose gate (vendored styleguide rules)",
+      "run": "python tools/prose_gate.py *.html",
+      "paths": [],
+      "ci": "gates.yml gates/Prose gate (vendored styleguide rules)"
+    },
+    {
+      "name": "gates:Gate self-tests",
+      "run": "python -m pytest tools/ -q",
+      "paths": [],
+      "ci": "gates.yml gates/Gate self-tests"
+    }
+  ],
+  "skipped": []
+}
